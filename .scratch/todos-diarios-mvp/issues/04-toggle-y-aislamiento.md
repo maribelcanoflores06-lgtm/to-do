@@ -4,11 +4,15 @@
 
 **Blocked by:** 03 — Crear, listar, editar y eliminar to-dos de hoy
 
-**Status:** ready-for-agent
+**Status:** resolved
 
-- [ ] `toggleTodo` marca y desmarca `done` en un to-do de hoy propiedad del usuario.
-- [ ] `toggleTodo` marca y desmarca `done` en un to-do de un día pasado propiedad del usuario (sin guardia de día).
-- [ ] `toggleTodo` lanza error si el to-do no existe o pertenece a otro usuario.
-- [ ] `getTodos` de un usuario no incluye to-dos de otro usuario aunque compartan el mismo `day`.
-- [ ] `updateTodo`, `deleteTodo` y `toggleTodo` lanzan «No autorizado» sin sesión autenticada.
-- [ ] Todas las pruebas de este ticket pasan con `bun run test` y la suite completa permanece verde.
+- [x] `toggleTodo` marca y desmarca `done` en un to-do de hoy propiedad del usuario.
+- [x] `toggleTodo` marca y desmarca `done` en un to-do de un día pasado propiedad del usuario (sin guardia de día).
+- [x] `toggleTodo` lanza error si el to-do no existe o pertenece a otro usuario.
+- [x] `getTodos` de un usuario no incluye to-dos de otro usuario aunque compartan el mismo `day`.
+- [x] `updateTodo`, `deleteTodo` y `toggleTodo` lanzan «No autorizado» sin sesión autenticada.
+- [x] Todas las pruebas de este ticket pasan con `bun run test` y la suite completa permanece verde.
+
+## Answer
+
+Cobertura en `tests/todos.test.ts` (describe «toggle y aislamiento»). Suite completa: 26 tests verdes.

@@ -1,5 +1,9 @@
 import { vi } from "vitest";
 
+import { DEFAULT_TODAY } from "./bind-db";
+
+export { DEFAULT_TODAY };
+
 export const mockRevalidatePath = vi.fn();
 
 vi.mock("next/cache", () => ({
@@ -27,7 +31,7 @@ vi.mock("@/lib/dates", async (importOriginal) => {
   };
 });
 
-mockToday.mockReturnValue("2026-08-01");
+mockToday.mockReturnValue(DEFAULT_TODAY);
 
 export function setAuthUser(userId: string) {
   mockAuth.mockResolvedValue({
@@ -46,7 +50,7 @@ export function setToday(day: string) {
 export function resetMocks() {
   mockAuth.mockReset();
   mockToday.mockReset();
-  mockToday.mockReturnValue("2026-08-01");
+  mockToday.mockReturnValue(DEFAULT_TODAY);
   mockRevalidatePath.mockReset();
   clearAuth();
 }

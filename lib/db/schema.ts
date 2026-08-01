@@ -1,12 +1,16 @@
-import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { boolean, index, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
 
-export const todos = sqliteTable("todos", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
-  userId: text("user_id").notNull(),
-  text: text("text").notNull(),
-  done: integer("done", { mode: "boolean" }).notNull().default(false),
-  day: text("day").notNull(),
-  createdAt: integer("created_at", { mode: "timestamp_ms" }).notNull(),
-});
+export const todos = pgTable(
+  "todos",
+  {
+    id: serial("id").primaryKey(),
+    userId: text("user_id").notNull(),
+    text: text("text").notNull(),
+    done: boolean("done").notNull().default(false),
+    day: text("day").notNull(),
+    createdAt: timestamp("created_at", { mode: "date" }).notNull(),
+  },
+  (table) => [index("todos_user_day_idx").on(table.userId, table.day)],
+);
 
 export type Todo = typeof todos.$inferSelect;

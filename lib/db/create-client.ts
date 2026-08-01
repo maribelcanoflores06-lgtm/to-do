@@ -1,7 +1,7 @@
 import Database from "better-sqlite3";
 import { drizzle } from "drizzle-orm/better-sqlite3";
 
-import * as schema from "./schema";
+import * as schema from "./schema.sqlite";
 
 const SCHEMA_SQL = `
   CREATE TABLE IF NOT EXISTS todos (

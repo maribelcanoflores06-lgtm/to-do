@@ -1,15 +1,16 @@
-import Database from "better-sqlite3";
-import fs from "fs";
-import path from "path";
+import { neon } from "@neondatabase/serverless";
+import { drizzle } from "drizzle-orm/neon-http";
 
-import { createDb } from "./create-client";
+import * as schema from "./schema";
 
-const dataDir = path.join(process.cwd(), "data");
+const databaseUrl = process.env.DATABASE_URL;
 
-if (!fs.existsSync(dataDir)) {
-  fs.mkdirSync(dataDir, { recursive: true });
+if (!databaseUrl) {
+  throw new Error(
+    "DATABASE_URL no está definida. Añádela a .env.local con la connection string de Neon.",
+  );
 }
 
-const sqlite = new Database(path.join(dataDir, "todo.db"));
+const sql = neon(databaseUrl);
 
-export const db = createDb(sqlite);
+export const db = drizzle(sql, { schema });

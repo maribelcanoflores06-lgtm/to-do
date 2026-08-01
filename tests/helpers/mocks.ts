@@ -1,8 +1,6 @@
 import { vi } from "vitest";
 
-import { DEFAULT_TODAY } from "./bind-db";
-
-export { DEFAULT_TODAY };
+import { DEFAULT_TODAY } from "./fixtures";
 
 export const mockRevalidatePath = vi.fn();
 

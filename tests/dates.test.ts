@@ -9,7 +9,7 @@ import {
   parseDayParam,
 } from "@/lib/dates";
 
-import { DEFAULT_TODAY } from "./helpers/bind-db";
+import { DEFAULT_TODAY } from "./helpers/fixtures";
 import { resetMocks, setToday } from "./helpers/mocks";
 
 describe("reglas de fecha", () => {
@@ -83,6 +83,7 @@ describe("reglas de fecha", () => {
       const label = formatDayLabel("2026-08-01");
 
       expect(label.charAt(0)).toBe(label.charAt(0).toUpperCase());
+      expect(label).toMatch(/sábado/i);
       expect(label).toMatch(/agosto/i);
       expect(label).toMatch(/2026/);
     });

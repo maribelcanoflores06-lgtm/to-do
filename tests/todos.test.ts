@@ -9,7 +9,8 @@ import {
 } from "@/lib/actions/todos";
 import { todos } from "@/lib/db/schema";
 
-import { bindTestDb, DEFAULT_TODAY, getBoundTestDb } from "./helpers/bind-db";
+import { bindTestDb, getBoundTestDb } from "./helpers/bind-db";
+import { DEFAULT_TODAY, PAST_DAY } from "./helpers/fixtures";
 import { clearAuth, resetMocks, setAuthUser, setToday } from "./helpers/mocks";
 
 describe("server actions de to-dos", () => {
@@ -59,10 +60,17 @@ describe("server actions de to-dos", () => {
           createdAt: new Date("2026-08-01T10:00:00"),
         },
         {
+          userId: "user-2",
+          text: "De otro usuario",
+          done: false,
+          day: DEFAULT_TODAY,
+          createdAt: new Date("2026-08-01T10:30:00"),
+        },
+        {
           userId: "user-1",
           text: "Otro día",
           done: false,
-          day: "2026-07-31",
+          day: PAST_DAY,
           createdAt: new Date("2026-07-31T10:00:00"),
         },
       ]);
@@ -103,7 +111,7 @@ describe("server actions de to-dos", () => {
         userId: "user-1",
         text,
         done: false,
-        day: "2026-07-31",
+        day: PAST_DAY,
         createdAt: new Date("2026-07-31T10:00:00"),
       });
       const [row] = await db.select().from(todos);
@@ -201,15 +209,19 @@ describe("server actions de to-dos", () => {
         userId: "user-1",
         text: "Pasado",
         done: false,
-        day: "2026-07-31",
+        day: PAST_DAY,
         createdAt: new Date("2026-07-31T10:00:00"),
       });
       const [todo] = await db.select().from(todos);
 
       await toggleTodo(todo!.id, true);
 
-      const rows = await getTodos("2026-07-31");
+      let rows = await getTodos(PAST_DAY);
       expect(rows[0]?.done).toBe(true);
+
+      await toggleTodo(todo!.id, false);
+      rows = await getTodos(PAST_DAY);
+      expect(rows[0]?.done).toBe(false);
     });
 
     it("toggleTodo lanza error si el to-do no existe o es de otro usuario", async () => {

@@ -4,13 +4,14 @@ import { auth } from "@/auth";
 
 export default auth((req) => {
   const isLoggedIn = !!req.auth;
-  const isLoginPage = req.nextUrl.pathname === "/login";
+  const pathname = req.nextUrl.pathname;
+  const isAuthPage = pathname === "/login" || pathname === "/register";
 
-  if (!isLoggedIn && !isLoginPage) {
+  if (!isLoggedIn && !isAuthPage) {
     return NextResponse.redirect(new URL("/login", req.nextUrl));
   }
 
-  if (isLoggedIn && isLoginPage) {
+  if (isLoggedIn && isAuthPage) {
     return NextResponse.redirect(new URL("/", req.nextUrl));
   }
 });

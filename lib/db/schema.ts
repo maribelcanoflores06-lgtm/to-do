@@ -1,4 +1,16 @@
-import { boolean, index, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
+import { boolean, index, pgTable, serial, text, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
+
+export const users = pgTable(
+  "users",
+  {
+    id: serial("id").primaryKey(),
+    email: text("email").notNull(),
+    passwordHash: text("password_hash").notNull(),
+    name: text("name"),
+    createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
+  },
+  (table) => [uniqueIndex("users_email_idx").on(table.email)],
+);
 
 export const todos = pgTable(
   "todos",
@@ -13,4 +25,5 @@ export const todos = pgTable(
   (table) => [index("todos_user_day_idx").on(table.userId, table.day)],
 );
 
+export type User = typeof users.$inferSelect;
 export type Todo = typeof todos.$inferSelect;

@@ -41,7 +41,10 @@ export default async function Home({
             {editable ? " · Hoy" : ""}
           </p>
         </div>
-        <UserMenu name={session.user.name} image={session.user.image} />
+        <UserMenu
+          name={session.user.name ?? session.user.email}
+          image={session.user.image}
+        />
       </header>
 
       <TodoApp day={day} todos={todos} editable={editable} />

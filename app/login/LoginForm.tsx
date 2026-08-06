@@ -4,7 +4,12 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useActionState } from "react";
 
+import { Button } from "@/app/components/ui/Button";
+import { Text } from "@/app/components/ui/Text";
 import { loginAction } from "@/lib/actions/auth";
+
+const inputClass =
+  "w-full rounded-[14px] bg-[#E5E5E5] px-4 py-3 text-base text-black outline-none transition placeholder:text-[#B0B0B0] focus:ring-2 focus:ring-black/15";
 
 export function LoginForm() {
   const searchParams = useSearchParams();
@@ -17,27 +22,27 @@ export function LoginForm() {
   );
 
   return (
-    <div className="w-full max-w-md rounded-2xl border border-zinc-200 bg-white p-8 shadow-sm dark:border-zinc-800 dark:bg-zinc-950">
-      <h1 className="text-center text-2xl font-semibold tracking-tight">
+    <div className="w-full max-w-md rounded-[20px] bg-white p-8">
+      <Text variant="display" className="text-center">
         To-dos diarios
-      </h1>
-      <p className="mt-2 text-center text-sm text-zinc-500 dark:text-zinc-400">
+      </Text>
+      <Text variant="body-muted" className="mt-2 text-center">
         Inicia sesión con tu correo y contraseña.
-      </p>
+      </Text>
 
       {registered ? (
-        <p className="mt-4 rounded-lg bg-green-50 px-3 py-2 text-sm text-green-800 dark:bg-green-950/40 dark:text-green-200">
+        <p className="mt-4 rounded-[14px] bg-[#F2F2F2] px-3 py-2 text-sm font-medium text-black">
           Cuenta creada. Ya puedes iniciar sesión.
         </p>
       ) : null}
 
       {state?.error ? (
-        <p className="mt-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-800 dark:bg-red-950/40 dark:text-red-200">
+        <p className="mt-4 rounded-[14px] bg-[#F2F2F2] px-3 py-2 text-sm font-medium text-[#E11D48]">
           {state.error}
         </p>
       ) : null}
 
-      <form action={formAction} className="mt-6 space-y-4">
+      <form action={formAction} className="mt-6 space-y-3">
         <div>
           <label htmlFor="email" className="sr-only">
             Correo
@@ -49,7 +54,7 @@ export function LoginForm() {
             autoComplete="email"
             required
             placeholder="Correo electrónico"
-            className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-base outline-none transition focus:border-zinc-400 dark:border-zinc-700 dark:bg-zinc-950 dark:focus:border-zinc-500"
+            className={inputClass}
           />
         </div>
         <div>
@@ -63,27 +68,23 @@ export function LoginForm() {
             autoComplete="current-password"
             required
             placeholder="Contraseña"
-            className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-base outline-none transition focus:border-zinc-400 dark:border-zinc-700 dark:bg-zinc-950 dark:focus:border-zinc-500"
+            className={inputClass}
           />
         </div>
-        <button
-          type="submit"
-          disabled={pending}
-          className="inline-flex w-full items-center justify-center rounded-xl bg-zinc-900 px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-zinc-700 disabled:opacity-60 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-300"
-        >
+        <Button type="submit" disabled={pending} className="w-full">
           {pending ? "Entrando…" : "Iniciar sesión"}
-        </button>
+        </Button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-zinc-500 dark:text-zinc-400">
+      <Text variant="body-muted" className="mt-6 text-center">
         ¿No tienes cuenta?{" "}
         <Link
           href="/register"
-          className="font-medium text-zinc-900 underline-offset-2 hover:underline dark:text-zinc-100"
+          className="font-semibold text-black underline-offset-2 hover:underline"
         >
           Regístrate
         </Link>
-      </p>
+      </Text>
     </div>
   );
 }

@@ -12,6 +12,8 @@ import {
 import type { Todo } from "@/lib/db/schema";
 
 import { DateNav } from "./DateNav";
+import { Button } from "./ui/Button";
+import { Text } from "./ui/Text";
 
 type TodoAppProps = {
   day: string;
@@ -44,40 +46,62 @@ export function TodoApp({ day, todos, editable }: TodoAppProps) {
     });
   }
 
+  const pendingCount = todos.filter((todo) => !todo.done).length;
+  const doneCount = todos.filter((todo) => todo.done).length;
+
   return (
     <>
       <DateNav day={day} />
 
       {editable ? (
-        <form onSubmit={handleCreate} className="mt-6">
+        <form onSubmit={handleCreate} className="mt-6 flex gap-2">
           <input
             type="text"
             value={newTodo}
             onChange={(event) => setNewTodo(event.target.value)}
             placeholder="Añadir to-do…"
             disabled={isPending}
-            className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-base outline-none transition focus:border-zinc-400 dark:border-zinc-700 dark:bg-zinc-950 dark:focus:border-zinc-500"
+            className="min-h-11 min-w-0 flex-1 rounded-full bg-[#E5E5E5] px-5 py-3 text-base text-black outline-none transition placeholder:text-[#B0B0B0] focus:ring-2 focus:ring-black/15 disabled:text-[#C0C0C0]"
           />
+          <Button type="submit" disabled={isPending || !newTodo.trim()} className="shrink-0">
+            Añadir
+          </Button>
         </form>
       ) : null}
 
-      <ul className="mt-6 flex flex-col gap-2">
-        {todos.length === 0 ? (
-          <li className="rounded-xl border border-dashed border-zinc-200 px-4 py-8 text-center text-sm text-zinc-500 dark:border-zinc-700 dark:text-zinc-400">
-            No hay to-dos este día
-          </li>
-        ) : (
-          todos.map((todo) => (
-            <TodoItem
-              key={todo.id}
-              todo={todo}
-              editable={editable}
-              disabled={isPending}
-              onChange={refresh}
-            />
-          ))
-        )}
-      </ul>
+      <section className="mt-6 rounded-[20px] bg-white p-5">
+        <div className="mb-4 flex items-start justify-between gap-3">
+          <div>
+            <Text variant="title">Tareas</Text>
+            <Text variant="body-muted" className="mt-1">
+              {pendingCount === 0
+                ? "No hay pendientes por ahora."
+                : `${pendingCount} pendiente${pendingCount === 1 ? "" : "s"}`}
+              {doneCount > 0 ? ` · ${doneCount} hecha${doneCount === 1 ? "" : "s"}` : ""}
+            </Text>
+          </div>
+        </div>
+
+        <ul className="flex flex-col gap-3">
+          {todos.length === 0 ? (
+            <li className="rounded-[14px] bg-[#F7F7F5] px-4 py-8 text-center">
+              <Text variant="body-muted" as="span">
+                No hay to-dos este día
+              </Text>
+            </li>
+          ) : (
+            todos.map((todo) => (
+              <TodoItem
+                key={todo.id}
+                todo={todo}
+                editable={editable}
+                disabled={isPending}
+                onChange={refresh}
+              />
+            ))
+          )}
+        </ul>
+      </section>
     </>
   );
 }
@@ -126,13 +150,13 @@ function TodoItem({ todo, editable, disabled, onChange }: TodoItemProps) {
   const itemDisabled = disabled || isPending;
 
   return (
-    <li className="flex items-center gap-3 rounded-xl border border-zinc-200 bg-white px-3 py-3 dark:border-zinc-800 dark:bg-zinc-950">
+    <li className="flex items-center gap-3 rounded-[14px] bg-[#F7F7F5] px-3 py-3">
       <input
         type="checkbox"
         checked={todo.done}
         onChange={(event) => handleToggle(event.target.checked)}
         disabled={itemDisabled}
-        className="h-4 w-4 shrink-0 accent-zinc-900 dark:accent-zinc-100"
+        className="h-5 w-5 shrink-0 rounded accent-black disabled:opacity-40"
         aria-label={todo.done ? "Marcar pendiente" : "Marcar hecho"}
       />
 
@@ -153,7 +177,7 @@ function TodoItem({ todo, editable, disabled, onChange }: TodoItemProps) {
             }
           }}
           disabled={itemDisabled}
-          className="min-w-0 flex-1 bg-transparent text-base outline-none"
+          className="min-w-0 flex-1 bg-transparent text-base font-medium text-black outline-none"
         />
       ) : (
         <button
@@ -165,8 +189,8 @@ function TodoItem({ todo, editable, disabled, onChange }: TodoItemProps) {
             }
           }}
           disabled={!editable || itemDisabled}
-          className={`min-w-0 flex-1 text-left text-base ${
-            todo.done ? "text-zinc-400 line-through" : ""
+          className={`min-w-0 flex-1 text-left text-base font-medium ${
+            todo.done ? "text-[#B0B0B0] line-through" : "text-black"
           } ${editable ? "cursor-text" : "cursor-default"}`}
         >
           {todo.text}
@@ -174,15 +198,15 @@ function TodoItem({ todo, editable, disabled, onChange }: TodoItemProps) {
       )}
 
       {editable ? (
-        <button
-          type="button"
+        <Button
+          variant="secondary"
           onClick={handleDelete}
           disabled={itemDisabled}
-          className="shrink-0 rounded-lg px-2 py-1 text-sm text-zinc-400 transition-colors hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/40"
           aria-label="Eliminar to-do"
+          className="min-h-9 shrink-0 px-3 py-1.5 text-sm"
         >
-          🗑
-        </button>
+          Eliminar
+        </Button>
       ) : null}
     </li>
   );

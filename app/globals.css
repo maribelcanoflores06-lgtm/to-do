@@ -1,26 +1,59 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg-page: #f7f7f5;
+  --bg-card: #ffffff;
+  --bg-muted: #f2f2f2;
+  --bg-input: #e5e5e5;
+  --bg-disabled: #f5f5f5;
+
+  --text-primary: #000000;
+  --text-secondary: #666666;
+  --text-disabled: #c0c0c0;
+  --text-placeholder: #b0b0b0;
+  --text-on-primary: #ffffff;
+
+  --accent-header: #d6c9ff;
+  --danger: #e11d48;
+
+  --radius-button: 14px;
+  --radius-card: 20px;
+  --radius-pill: 9999px;
+  --radius-well: 12px;
+
+  --background: var(--bg-page);
+  --foreground: var(--text-primary);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-page: var(--bg-page);
+  --color-card: var(--bg-card);
+  --color-muted: var(--bg-muted);
+  --color-input: var(--bg-input);
+  --color-disabled: var(--bg-disabled);
+  --color-primary: var(--text-primary);
+  --color-secondary: var(--text-secondary);
+  --color-placeholder: var(--text-placeholder);
+  --color-on-primary: var(--text-on-primary);
+  --color-accent-header: var(--accent-header);
+  --color-danger: var(--danger);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --radius-button: var(--radius-button);
+  --radius-card: var(--radius-card);
+  --radius-pill: var(--radius-pill);
+  --radius-well: var(--radius-well);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg-page);
+  color: var(--text-primary);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+::placeholder {
+  color: var(--text-placeholder);
+  opacity: 1;
 }
